@@ -1,3 +1,8 @@
+variable "build_folder" {
+  type = "string"
+  description = "This is the folder which contains the app source"
+}
+
 variable "dockerfile_folder" {
   type = "string"
   description = "This is the folder which contains the Dockerfile"

@@ -26,12 +26,15 @@ resource "aws_ecr_repository" "test_service" {
 module "ecr_docker_build" {
   source = "github.com/onnimonni/terraform-ecr-docker-build-module"
 
+  # Absolute path into the directory that contain Dockerfile
+  dockerfile_folder = "${path.module}/example-service-directory/docker"
+
   # Absolute path into the service which needs to be build
-  dockerfile_folder = "${path.module}/example-service-directory"
+  build_folder = "${path.module}/example-service-directory"
 
   # Tag for the builded Docker image (Defaults to 'latest')
   docker_image_tag = "development"
-  
+
   # The region which we will log into with aws-cli
   aws_region = "eu-west-1"
 

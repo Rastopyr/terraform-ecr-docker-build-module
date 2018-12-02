@@ -5,8 +5,9 @@ set -e
 
 # This is the order of arguments
 build_folder=$1
-aws_ecr_repository_url_with_tag=$2
-aws_region=$3
+dockerfile_folder=$2
+aws_ecr_repository_url_with_tag=$3
+aws_region=$4
 
 # Allow overriding the aws region from system
 if [ "$aws_region" != "" ]; then
@@ -25,10 +26,11 @@ $(aws ecr get-login --no-include-email $aws_extra_flags) || { echo 'ERROR: aws e
 which docker > /dev/null && docker ps > /dev/null || { echo 'ERROR: docker is not running' ; exit 1; }
 
 # Some Useful Debug
-echo "Building $aws_ecr_repository_url_with_tag from $build_folder/Dockerfile"
+echo "Building $aws_ecr_repository_url_with_tag from $dockerfile_folder/Dockerfile"
 
+echo "docker build -t $aws_ecr_repository_url_with_tag -f $dockerfile_folder/Dockerfile $build_folder"
 # Build image
-docker build -t $aws_ecr_repository_url_with_tag $build_folder
+docker build -t $aws_ecr_repository_url_with_tag -f "$dockerfile_folder/Dockerfile" $build_folder
 
 # Push image
 docker push $aws_ecr_repository_url_with_tag
