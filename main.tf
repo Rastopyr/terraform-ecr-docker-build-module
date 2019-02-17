@@ -1,12 +1,7 @@
-# Checks if build folder has changed
-data "external" "build_folder" {
-  program = ["${path.module}/bin/folder_contents.sh", "${var.build_folder}"]
-}
-
 # Builds test-service and pushes it into aws_ecr_repository
 resource "null_resource" "build_and_push" {
   triggers {
-    build_folder_content_md5 = "${data.external.build_folder.result.md5}"
+    docker_image_tag = "${var.docker_image_tag}"
   }
 
   # See build.sh for more details
